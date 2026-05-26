@@ -16,12 +16,17 @@
         .badge-stock-low { background-color: #f59e0b; }
         .badge-stock-out { background-color: #ef4444; }
         .product-price { font-weight: 700; color: #e94560; }
+        .pagination .page-item.active .page-link { background-color: #e94560; border-color: #e94560; }
+        .pagination .page-link { color: #e94560; }
+        .pagination .page-link:hover { color: #c73652; }
+        .btn-primary { background-color: #0f3460; border-color: #0f3460; }
+        .btn-primary:hover { background-color: #0a2540; border-color: #0a2540; }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
-    <div class="container flex-grow-1">
+    <div class="container">
     <a class="navbar-brand" th:href="@{/home}">HanSung</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
             <span class="navbar-toggler-icon"></span>
@@ -44,7 +49,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container flex-grow-1">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="page-header">
             <h4 class="fw-bold mb-0">상품 목록</h4>
@@ -52,6 +57,13 @@
         </div>
         <a th:href="@{/products/add}" class="btn btn-danger btn-sm px-4 fw-semibold"
            sec:authorize="hasRole('ADMIN')">+ 상품 등록</a>
+    </div>
+    <!-- 검색창 -->
+    <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control"
+               placeholder="상품명으로 검색" th:value="${keyword}"/>
+        <button class="btn btn-primary" onclick="doSearch()">검색</button>
+        <button class="btn btn-outline-secondary" onclick="location.href='/products'">초기화</button>
     </div>
 
     <div class="card border-0 shadow-sm">
@@ -105,6 +117,30 @@
         </div>
     </div>
 </div>
+<!-- 페이지네이션 -->
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/products(page=${currentPage - 1}, keyword=${keyword})}">이전</a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/products(page=${i}, keyword=${keyword})}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/products(page=${currentPage + 1}, keyword=${keyword})}">다음</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- 푸터 -->
 <div class="container-fluid py-3 text-center small mt-auto" style="color: rgba(0,0,0,0.4);">
     학번: 2171180 &nbsp;|&nbsp; 성명: 박영호 &nbsp;|&nbsp;
     실습 수행: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}">2026-05-26 17:35:00</span>
