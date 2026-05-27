@@ -40,7 +40,14 @@ public class DataInitializer implements ApplicationRunner {
             userRepository.save(admin);
             log.info("초기 관리자 계정 생성: admin@hansung.ac.kr / admin1234");
         }
-
+        if (!userRepository.existsByEmail("user@hansung.ac.kr")) {
+            User user = new User();
+            user.setEmail("user@hansung.ac.kr");
+            user.setPassword(passwordEncoder.encode("user1234"));
+            user.getRoles().add(userRole);
+            userRepository.save(user);
+            log.info("초기 일반 계정 생성: user@hansung.ac.kr / user1234");
+        }
         if (productRepository.count() == 0) {
             // --- 기술 서적 10종 ---
             productRepository.save(new Product("Spring Boot 4 완벽 가이드",  35000, "Spring Boot 4 + JPA + Security 실습서", 50));
