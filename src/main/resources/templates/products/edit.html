@@ -42,33 +42,25 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-            <form th:action="@{/products/{id}/edit(id=${productId})}" method="post">
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">상품명 <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control"
-                           th:value="${product.name}"
-                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" />
-                    <div class="invalid-feedback" th:errors="${product.name}"></div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">설명</label>
-                    <input type="text" name="description" class="form-control"
-                           th:value="${product.description}" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">가격 <span class="text-danger">*</span></label>
-                    <input type="number" name="price" class="form-control"
-                           th:value="${product.price}"
-                           th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'" />
-                    <div class="invalid-feedback" th:errors="${product.price}"></div>
-                </div>
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">재고 <span class="text-danger">*</span></label>
-                    <input type="number" name="stock" class="form-control"
-                           th:value="${product.stock}"
-                           th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid'" />
-                    <div class="invalid-feedback" th:errors="${product.stock}"></div>
-                </div>
+            <form th:action="@{/products/{id}/edit(id=${productId})}" method="post"
+                  th:object="${product}">
+                <input type="text" name="name" class="form-control"
+                       th:value="*{name}"
+                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" />
+                <div class="invalid-feedback" th:errors="*{name}"></div>
+
+                <input type="text" name="description" class="form-control"
+                       th:value="*{description}" />
+
+                <input type="number" name="price" class="form-control"
+                       th:value="*{price}"
+                       th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'" />
+                <div class="invalid-feedback" th:errors="*{price}"></div>
+
+                <input type="number" name="stock" class="form-control"
+                       th:value="*{stock}"
+                       th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid'" />
+                <div class="invalid-feedback" th:errors="*{stock}"></div>
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary fw-semibold px-4">수정 완료</button>
                     <a th:href="@{/products}" class="btn btn-outline-secondary px-4">취소</a>
