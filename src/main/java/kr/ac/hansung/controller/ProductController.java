@@ -35,7 +35,6 @@ public class ProductController {
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("totalElements", productPage.getTotalElements());
         model.addAttribute("keyword", keyword);
-
         return "products/list";
     }
 
